@@ -41,16 +41,23 @@ public class SecurityConfig{
     public BCryptPasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http.csrf().disable();
 
         http.addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class);
 
-        http.formLogin().disable()
-                .httpBasic().disable();
+        http.formLogin().disable();
 
-        http.authorizeRequests().antMatchers("/h2-console/**","/api/**").permitAll()
+        http.authorizeRequests().antMatchers(
+                "/v2/api-docs",
+                "/swagger-ui.html",
+                        "/webjars/**",
+                        "/swagger-resources/**",
+                        "/swagger/**",
+                        "/h2-console/**",
+                        "/api/**").permitAll()
                 .anyRequest().authenticated();
 
         http.headers().frameOptions().disable();

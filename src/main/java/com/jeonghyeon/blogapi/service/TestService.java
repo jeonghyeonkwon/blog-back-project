@@ -28,6 +28,10 @@ public class TestService {
     }
     @Transactional
     public void createAdmin() {
-        accountRepository.save(new Account("givejeong", passwordEncoder.encode("1234"), "권정현"));
+        Optional<Account> admin = accountRepository.findByUserId("givejeong");
+        if(admin.isEmpty()){
+            accountRepository.save(new Account("givejeong", passwordEncoder.encode("1234"), "권정현"));
+        }
+
     }
 }

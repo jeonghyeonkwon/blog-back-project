@@ -6,7 +6,6 @@ import com.jeonghyeon.blogapi.security.jwt.TokenProvider;
 import com.jeonghyeon.blogapi.security.util.SecurityUtil;
 import com.jeonghyeon.blogapi.service.TestService;
 import io.swagger.annotations.ApiOperation;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,8 +19,8 @@ import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/test")
-public class TestApiController {
+@RequestMapping("/api/test/account")
+public class TestAccountApiController {
     private final TestService testService;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final TokenProvider tokenProvider;
@@ -55,7 +54,7 @@ public class TestApiController {
     @GetMapping("/login-check")
     @ApiOperation(value = "로그인 체크", notes = "로그인 체크 테스트 제대로된 토큰 검증시 유저 아이디 반환")
     public ResponseEntity userInfo(){
-        Optional<String> opAccountId = SecurityUtil.getCurrnetAccountId();
+        Optional<String> opAccountId = SecurityUtil.getCurrentAccountId();
         if(opAccountId.isPresent()){
             return new ResponseEntity(opAccountId.get(),HttpStatus.OK);
         }

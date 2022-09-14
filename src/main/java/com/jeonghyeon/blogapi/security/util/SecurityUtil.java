@@ -10,7 +10,7 @@ import java.util.Optional;
 @Slf4j
 public class SecurityUtil {
 
-    public static Optional<String> getCurrnetAccountId(){
+    public static Optional<String> getCurrentAccountId(){
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if(authentication==null){

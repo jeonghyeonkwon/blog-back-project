@@ -10,4 +10,6 @@ public class LoginRequest {
     private String username;
     @ApiModelProperty(example = "유저 비밀번호")
     private String password;
+
+
 }

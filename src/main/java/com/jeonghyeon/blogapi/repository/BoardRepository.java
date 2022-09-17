@@ -8,21 +8,21 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import java.time.LocalDateTime;
+
 import java.util.Optional;
 
 public interface BoardRepository extends JpaRepository<Board,Long> {
 
-//    public BoardListResponse(Long id, String title, String writer, LocalDateTime localDateTime, Long view)
+    // BoardListResponse(Long id, String title, String writer, LocalDateTime localDateTime, Long view)
     @Query("SELECT new com.jeonghyeon.blogapi.dto.response.BoardListResponse(board.id, board.title, account.userId, board.createdDate, board.view)" +
             " FROM Board board" +
-            " JOIN FETCH board.account account")
+            " JOIN board.account account")
     Page<BoardListResponse> boardList(Pageable pageable);
 
 //      BoardDetailResponse(String title, String content, String writer, LocalDateTime localDateTime, Long view)
     @Query("SELECT new com.jeonghyeon.blogapi.dto.response.BoardDetailResponse(board.title, board.content, account.userId, board.createdDate, board.view)" +
             " FROM Board board" +
-            " JOIN FETCH board.account account" +
+            " JOIN board.account account" +
             " WHERE board.id = :id")
     Optional<BoardDetailResponse> boardDetail(Long id);
 }

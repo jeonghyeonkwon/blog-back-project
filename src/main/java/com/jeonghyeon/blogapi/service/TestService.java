@@ -65,4 +65,33 @@ public class TestService {
 
         return opBoardDetailResponse.get();
     }
+
+    @Transactional
+    public Long updateBoard(Long id, String accountId, BoardRequest dto) {
+        Optional<Account> opAccount = accountRepository.findByUserId(accountId);
+        if(opAccount.isEmpty()) throw new IllegalStateException("해당 유저는 존재하지 않습니다.");
+
+        Optional<Board> opBoard = boardRepository.findById(id);
+        if(opBoard.isEmpty()) throw new IllegalStateException("해당 게시글은 존재하지 않습니다.");
+        Board board = opBoard.get();
+        if(!accountId.equals(board.getAccount().getUserId())) throw new IllegalStateException("해당 게시글을 작성한 유저가 아닙니다.");
+        Board updateBoard = board.update(dto.getTitle(), dto.getContent());
+        boardRepository.save(updateBoard);
+
+        return id;
+    }
+
+    @Transactional
+    public Long deleteBoard(Long id, String accountId) {
+        Optional<Account> opAccount = accountRepository.findByUserId(accountId);
+        if(opAccount.isEmpty()) throw new IllegalStateException("해당 유저는 존재하지 않습니다.");
+        Optional<Board> opBoard = boardRepository.findById(id);
+        if(opBoard.isEmpty()) throw new IllegalStateException("해당 게시글은 존재하지 않습니다.");
+        Board board = opBoard.get();
+        if(!accountId.equals(board.getAccount().getUserId())) throw new IllegalStateException("해당 게시글을 작성한 유저가 아닙니다.");
+        board.deleteMapping();
+        boardRepository.delete(board);
+        return id;
+
+    }
 }

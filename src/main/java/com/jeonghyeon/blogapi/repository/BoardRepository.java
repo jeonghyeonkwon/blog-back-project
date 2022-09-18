@@ -25,4 +25,11 @@ public interface BoardRepository extends JpaRepository<Board,Long> {
             " JOIN board.account account" +
             " WHERE board.id = :id")
     Optional<BoardDetailResponse> boardDetail(Long id);
+
+
+    @Query("SELECT board" +
+            " FROM Board board" +
+            " JOIN FETCH board.account" +
+            " WHERE board.id = :id")
+    Optional<Board> findById(Long id);
 }

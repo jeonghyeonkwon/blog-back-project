@@ -36,4 +36,16 @@ public class Board extends BaseTimeEntity {
         this.content = content;
         this.view = 1L;
     }
+
+    public Board update(String title, String content) {
+        this.title = title;
+        this.content = content;
+        return this;
+    }
+
+    public Board deleteMapping() {
+        this.account.getBoardList().remove(this);
+        this.account = null;
+        return this;
+    }
 }

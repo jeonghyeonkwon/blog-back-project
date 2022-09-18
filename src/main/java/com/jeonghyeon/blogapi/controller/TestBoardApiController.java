@@ -47,4 +47,25 @@ public class TestBoardApiController {
         BoardDetailResponse boardDetailResponse = testService.boardDetail(id);
         return new ResponseEntity(boardDetailResponse,HttpStatus.OK);
     }
+
+    @PatchMapping("/{id}")
+    @ApiOperation(value = "게시글 수정", notes = "게시글 수정 api")
+    public ResponseEntity updateBoard(@PathVariable Long id, @RequestBody BoardRequest dto){
+        Optional<String> opAccountId = SecurityUtil.getCurrentAccountId();
+        if(opAccountId.isEmpty()) throw new IllegalStateException("로그인 후 이용해 주세요.");
+        Long boardId = testService.updateBoard(id, opAccountId.get(), dto);
+        return new ResponseEntity(boardId,HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    @ApiOperation(value = "게시글 삭제", notes = "게시글 삭제 api")
+    public ResponseEntity deleteBoard(@PathVariable Long id){
+        // 게시글을 바로 삭제할지 BoardStatus 값을 줘서 할 지 선택
+        // test는 바로 삭제
+        Optional<String> opAccountId = SecurityUtil.getCurrentAccountId();
+        if(opAccountId.isEmpty()) throw new IllegalStateException("로그인 후 이용해 주세요.");
+        testService.deleteBoard(id,opAccountId.get());
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+
 }
